@@ -1,0 +1,9 @@
+{
+  "bundleDisplayName" : "Swift-DocC-Render",
+  "bundleIdentifier" : "org.swift.swiftdoccrender",
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 1,
+    "patch" : 0
+  }
+}

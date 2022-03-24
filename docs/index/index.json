@@ -1,0 +1,27 @@
+{
+  "interfaceLanguages" : {
+    "swift" : [
+      {
+        "children" : [
+          {
+            "title" : "Contributing and Internals",
+            "type" : "groupMarker"
+          },
+          {
+            "path" : "\/documentation\/swift-docc-render\/internals",
+            "title" : "Learn about DocC-Render’s internals",
+            "type" : "article"
+          }
+        ],
+        "path" : "\/documentation\/swiftdoccrender",
+        "title" : "Swift-DocC-Render",
+        "type" : "module"
+      }
+    ]
+  },
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 1,
+    "patch" : 0
+  }
+}

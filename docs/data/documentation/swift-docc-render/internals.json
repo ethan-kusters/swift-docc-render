@@ -1,0 +1,1362 @@
+{
+  "abstract" : [
+    {
+      "text" : "Learn how DocC-Render is built internally, the principles behind its structure, and how the components interact.",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+        "doc:\/\/org.swift.swiftdoccrender\/documentation\/SwiftDocCRender"
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/org.swift.swiftdoccrender\/documentation\/Swift-DocC-Render\/Internals"
+  },
+  "kind" : "article",
+  "metadata" : {
+    "role" : "article",
+    "roleHeading" : "Article",
+    "title" : "Learn about DocC-Render’s internals"
+  },
+  "primaryContentSections" : [
+    {
+      "content" : [
+        {
+          "anchor" : "Overview",
+          "level" : 2,
+          "text" : "Overview",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "DocC-Render supports rendering reference pages, tutorials, and articles to document your project in a structured manner.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Each page fetches its required render JSON asynchronously, from the ",
+              "type" : "text"
+            },
+            {
+              "code" : "\/data",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " directory. To learn more about the types of pages DocC-Render supports, visit the ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "https:\/\/www.swift.org\/documentation\/docc",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : ".",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "anchor" : "Modular-Architecture",
+          "level" : 3,
+          "text" : "Modular Architecture",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Even though ",
+              "type" : "text"
+            },
+            {
+              "code" : "swift-docc-render",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " is a Vue.js application, it defines a variety of components and utilities, that could also be used in a modular fashion by some other Vue application. All components are packaged as raw Vue files, so Vue applications can utilize them as needed.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "anchor" : "Vue-Page-Structure",
+          "level" : 3,
+          "text" : "Vue Page Structure",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Routing in DocC-Render is handled by ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "https:\/\/router.vuejs.org",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : ", with routes defined in ",
+              "type" : "text"
+            },
+            {
+              "code" : "src\/routes.js",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ". Pages can be dynamic, meaning a single page can match many urls, but still be rendered by the same Vue Page Component. For example the ",
+              "type" : "text"
+            },
+            {
+              "code" : "\/tutorials\/:id",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " route is rendered by the ",
+              "type" : "text"
+            },
+            {
+              "inlineContent" : [
+                {
+                  "text" : "TutorialOverview",
+                  "type" : "text"
+                }
+              ],
+              "type" : "strong"
+            },
+            {
+              "text" : " page.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "For each page type we have:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "A ",
+                      "type" : "text"
+                    },
+                    {
+                      "inlineContent" : [
+                        {
+                          "text" : "view",
+                          "type" : "text"
+                        }
+                      ],
+                      "type" : "strong"
+                    },
+                    {
+                      "text" : " component inside the ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "views",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " folder. It is used to fetch and provide the data down to its children.",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "A ",
+                      "type" : "text"
+                    },
+                    {
+                      "inlineContent" : [
+                        {
+                          "text" : "page",
+                          "type" : "text"
+                        }
+                      ],
+                      "type" : "strong"
+                    },
+                    {
+                      "text" : " component, responsible for rendering the atomic components, based on the available JSON. This is generally a direct child component of the ",
+                      "type" : "text"
+                    },
+                    {
+                      "inlineContent" : [
+                        {
+                          "text" : "view",
+                          "type" : "text"
+                        }
+                      ],
+                      "type" : "strong"
+                    },
+                    {
+                      "text" : " component.",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "anchor" : "Sub-Components",
+          "level" : 3,
+          "text" : "Sub Components",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Each page is made out of isolated sub components, rendered depending on the data coming from DocC. These components are the building blocks of all pages.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Some of the more generic ones like ",
+              "type" : "text"
+            },
+            {
+              "code" : "ContentNode",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " or ",
+              "type" : "text"
+            },
+            {
+              "code" : "GridColumn",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " are in almost every page, whereas others belong to only certain page types. Those belonging to a certain page type, are usually scoped to a folder named after their page type.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "code" : "ContentNode",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " is the backbone of the DocC-Render application, responsible for deeply walking through the Render JSON and rendering each of the smaller building blocks related to markdown content.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "anchor" : "Internal-Links-and-Routes",
+          "level" : 3,
+          "text" : "Internal Links and Routes",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Routes in DocC-Render are very flexible and define a very relaxed matching pattern.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "For example, the ",
+              "type" : "text"
+            },
+            {
+              "code" : "\/documentation\/*",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " route for documentation pages will try to fetch data and render a page using the ",
+              "type" : "text"
+            },
+            {
+              "code" : "*",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " part of the URL as the path of the data to fetch. The same idea applies to the ",
+              "type" : "text"
+            },
+            {
+              "code" : "\/tutorials\/*",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " route.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "inlineContent" : [
+                {
+                  "text" : "Example:",
+                  "type" : "text"
+                }
+              ],
+              "type" : "strong"
+            },
+            {
+              "text" : "",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "For the route ",
+              "type" : "text"
+            },
+            {
+              "code" : "\/documentation\/path\/to\/something",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " DocC-Render will try to fetch DocC generated JSON, using the same nested path ",
+              "type" : "text"
+            },
+            {
+              "code" : "\/data\/documentation\/path\/to\/something.json",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ".",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Links to pages in DocC-Render are generated using references coming from the render JSON. You can use ",
+              "type" : "text"
+            },
+            {
+              "code" : "ReferenceUrlProvider",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " to get the URL and title from a reference.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "code" : [
+            "<ReferenceUrlProvider :reference=\"someFooReference\">",
+            "    <router-link ",
+            "        slot-scope=\"{ url, title }\"",
+            "        :to=\"url\"",
+            "    >",
+            "        {{ title }}",
+            "    <\/router-link>",
+            "<\/ReferenceUrlProvider>"
+          ],
+          "syntax" : "html",
+          "type" : "codeListing"
+        },
+        {
+          "anchor" : "Stores",
+          "level" : 3,
+          "text" : "Stores",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "A DocC-Render store module extracts commonly used data that needs to be reactive and be accessible to multiple components.",
+              "type" : "text"
+            },
+            {
+              "text" : " ",
+              "type" : "text"
+            },
+            {
+              "text" : "A store is just an ES Module that exposes a ",
+              "type" : "text"
+            },
+            {
+              "code" : "state",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " object and some methods. This follows the ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "https:\/\/vuejs.org\/v2\/guide\/state-management.html#Simple-State-Management-from-Scratch",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " section from the Vue docs.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "code" : [
+            "\/\/ src\/stores\/FooStore.js",
+            "export default {",
+            "  state: {},",
+            "  setFoo(foo){",
+            "    this.state.foo = foo;  ",
+            "  },",
+            "}"
+          ],
+          "syntax" : "js",
+          "type" : "codeListing"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "In order to make the state reactive, a Vue component imports the module and attaches its ",
+              "type" : "text"
+            },
+            {
+              "code" : "state",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " to a ",
+              "type" : "text"
+            },
+            {
+              "code" : "data",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " property.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "code" : [
+            "\/\/ src\/views\/FooView.vue",
+            "",
+            "import FooStore from '@\/stores\/FooStore'",
+            "",
+            "export default {",
+            "  computed: {",
+            "    store: FooStore",
+            "  },",
+            "  provide() {",
+            "    return { store: this.store };",
+            "  },",
+            "}"
+          ],
+          "syntax" : "js",
+          "type" : "codeListing"
+        },
+        {
+          "code" : [
+            "\/\/ src\/components\/FooView\/FooComponent.vue",
+            " ",
+            "export default {",
+            "  inject: ['store'],",
+            "  data() {",
+            "    return {",
+            "      state: this.store.state,",
+            "    }",
+            "  }",
+            "}"
+          ],
+          "syntax" : "js",
+          "type" : "codeListing"
+        },
+        {
+          "anchor" : "Constants",
+          "level" : 3,
+          "text" : "Constants",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Files inside the ",
+              "type" : "text"
+            },
+            {
+              "code" : "constants",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " folder are meant to share different constant value across many components. They are preferably kept simple, scoping common constants to a single file.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "anchor" : "Icons",
+          "level" : 3,
+          "text" : "Icons",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Icons in DocC-Render are Vue components that utilize the ",
+              "type" : "text"
+            },
+            {
+              "code" : "SVGIcon",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " component. Inside the ",
+              "type" : "text"
+            },
+            {
+              "code" : "SVGIcon",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " element, you can copy the body of an SVG file with the ",
+              "type" : "text"
+            },
+            {
+              "code" : "svg",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " tag removed. This is done so we can load vector icons inline, and be able to change properties like colors and fills easily with css.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "code" : [
+            "<template>",
+            "  <SVGIcon class=\"diagonal-arrow\" viewBox=\"0 0 14 14\">",
+            "    <path d=\"M0.010 12.881l10.429-10.477-3.764 0.824-0.339-1.549 7.653-1.679-1.717 7.622-1.546-0.349 0.847-3.759-10.442 10.487z\"><\/path>",
+            "  <\/SVGIcon>",
+            "<\/template>",
+            "",
+            "<script>",
+            "import SVGIcon from '@\/components\/SVGIcon.vue';",
+            "",
+            "export default {",
+            "  name: 'DiagonalArrowIcon',",
+            "  components: { SVGIcon },",
+            "};",
+            "<\/script>"
+          ],
+          "syntax" : "html",
+          "type" : "codeListing"
+        },
+        {
+          "anchor" : "Styles",
+          "level" : 3,
+          "text" : "Styles",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Styles in DocC-Render are separated between ",
+              "type" : "text"
+            },
+            {
+              "code" : "core",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " and ",
+              "type" : "text"
+            },
+            {
+              "code" : "base",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " styles, with the majority of styling being defined as scoped inside the corresponding Vue file.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "content" : [
+            {
+              "inlineContent" : [
+                {
+                  "text" : "Define styles inside Vue files as ",
+                  "type" : "text"
+                },
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "scoped",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "strong"
+                },
+                {
+                  "text" : ", so style collisions are reduced to a minimum.",
+                  "type" : "text"
+                }
+              ],
+              "type" : "paragraph"
+            }
+          ],
+          "style" : "note",
+          "type" : "aside"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "The ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "base",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " styles represent global styles, like resetting styles, styling links and headings across the app. These styles are imported once, purposefully not scoped, inside ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "App.vue",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ".",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "The ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "core",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : " styles are used to define Sass variables, mixins and functions, that are to be used to generate reusable and complex styles inside Vue files.",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "content" : [
+            {
+              "inlineContent" : [
+                {
+                  "text" : "SCSS files inside ",
+                  "type" : "text"
+                },
+                {
+                  "inlineContent" : [
+                    {
+                      "text" : "core",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "strong"
+                },
+                {
+                  "text" : " should never output css directly! These style files are imported in almost every vue file, and making them output styles, will lead to duplication of styles across the entire app.",
+                  "type" : "text"
+                }
+              ],
+              "type" : "paragraph"
+            }
+          ],
+          "style" : "important",
+          "type" : "aside"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "If you need access to a global mixin or var, from ",
+              "type" : "text"
+            },
+            {
+              "code" : "_core.scss",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " you have to import it first.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "code" : [
+            "<style scoped lang=\"scss\">",
+            "  @import '@\/styles\/_core.scss';",
+            "  .some-class {",
+            "    margin-left: $varfrom-core-folder;",
+            "  }",
+            "<\/style>"
+          ],
+          "syntax" : "html",
+          "type" : "codeListing"
+        },
+        {
+          "anchor" : "Local-Development",
+          "level" : 3,
+          "text" : "Local Development",
+          "type" : "heading"
+        },
+        {
+          "anchor" : "Unit-tests",
+          "level" : 4,
+          "text" : "Unit tests",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "DocC-Render is unit tested, using the ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "https:\/\/jestjs.io\/",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " testing framework. All components and utilities strive to have a corresponding test file inside the  ",
+              "type" : "text"
+            },
+            {
+              "code" : "tests",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : " folder, mirroring the file’s location.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "Unit tests can be run via:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "npm run test:unit",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : "  - run all unittests",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "npm run test:unit:watch",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : "  - run only the modified files and watch for changes",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "code" : "npx run test:unit tests\/unit\/path\/to\/spec.js",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : "  - run an individual test file",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "anchor" : "Code-style",
+          "level" : 4,
+          "text" : "Code style",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "DocC-Render uses ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "https:\/\/eslint.org\/",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " to format the code and avoid syntax errors. It is following ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "https:\/\/github.com\/airbnb\/javascript",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " code styling along with ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "https:\/\/vuejs.org\/v2\/style-guide\/",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : "’s essential configuration.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "To run the linter run:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "code" : "npm run lint",
+              "type" : "codeVoice"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "To automatically fix any error, run:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "code" : "npm run lint:fix",
+              "type" : "codeVoice"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "If you use the development server via ",
+              "type" : "text"
+            },
+            {
+              "code" : "npm run serve",
+              "type" : "codeVoice"
+            },
+            {
+              "text" : ", files are linted on each change. Read more about configuring your linter ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "https:\/\/cli.vuejs.org\/core-plugins\/eslint.html#configuration",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : ".",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "anchor" : "Environment-flags",
+          "level" : 4,
+          "text" : "Environment flags",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "DocC-Render has a few build-time environment flags, that allow you to set configuration parameters before building. Read ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "https:\/\/cli.vuejs.org\/guide\/mode-and-env.html#environment-variables",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : ".",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "inlineContent" : [
+            {
+              "inlineContent" : [
+                {
+                  "text" : "List of env variables:",
+                  "type" : "text"
+                }
+              ],
+              "type" : "strong"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "inlineContent" : [
+                        {
+                          "text" : "VUE_APP_DEV_SERVER_PROXY",
+                          "type" : "text"
+                        }
+                      ],
+                      "type" : "strong"
+                    },
+                    {
+                      "text" : " - The HTTP endpoint or  local filepath to read render JSON from when using the development server",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "inlineContent" : [
+                        {
+                          "text" : "VUE_APP_TITLE",
+                          "type" : "text"
+                        }
+                      ],
+                      "type" : "strong"
+                    },
+                    {
+                      "text" : " - An optional default page title to apply to pages",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "anchor" : "Available-Scripts",
+          "level" : 4,
+          "text" : "Available Scripts",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "These are the most commonly used npm scripts you would need to develop DocC-Render:",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "items" : [
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "inlineContent" : [
+                        {
+                          "text" : "serve",
+                          "type" : "text"
+                        }
+                      ],
+                      "type" : "strong"
+                    },
+                    {
+                      "text" : " - used while developing DocC-Render or a theme. Starts up a custom live-reloading server, which serves a local DocC-Render instance.",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "inlineContent" : [
+                        {
+                          "text" : "build",
+                          "type" : "text"
+                        }
+                      ],
+                      "type" : "strong"
+                    },
+                    {
+                      "text" : " - builds DocC-Render, in a state ready for ",
+                      "type" : "text"
+                    },
+                    {
+                      "code" : "docc",
+                      "type" : "codeVoice"
+                    },
+                    {
+                      "text" : ".",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "inlineContent" : [
+                        {
+                          "text" : "test",
+                          "type" : "text"
+                        }
+                      ],
+                      "type" : "strong"
+                    },
+                    {
+                      "text" : " - run the entire DocC-Render test suite.",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            },
+            {
+              "content" : [
+                {
+                  "inlineContent" : [
+                    {
+                      "inlineContent" : [
+                        {
+                          "text" : "lint",
+                          "type" : "text"
+                        }
+                      ],
+                      "type" : "strong"
+                    },
+                    {
+                      "text" : " - run the linter, to check for code styling errors.",
+                      "type" : "text"
+                    }
+                  ],
+                  "type" : "paragraph"
+                }
+              ]
+            }
+          ],
+          "type" : "unorderedList"
+        },
+        {
+          "anchor" : "Configuring-the-server",
+          "level" : 4,
+          "text" : "Configuring the server",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "DocC-Render uses browser APIs to simulate nested file structures, which means we need to tell the server to redirect those nested paths properly. To see examples for popular server configs, check: ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "https:\/\/router.vuejs.org\/guide\/essentials\/history-mode.html#example-server-configurations",
+              "isActive" : true,
+              "type" : "reference"
+            }
+          ],
+          "type" : "paragraph"
+        }
+      ],
+      "kind" : "content"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/swift-docc-render\/internals"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://org.swift.swiftdoccrender/documentation/SwiftDocCRender": {
+  "abstract" : [
+    {
+      "text" : "A web renderer for DocC Archives produced by DocC.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/org.swift.swiftdoccrender\/documentation\/SwiftDocCRender",
+  "kind" : "article",
+  "role" : "collection",
+  "title" : "Swift-DocC-Render",
+  "type" : "topic",
+  "url" : "\/documentation\/swiftdoccrender"
+},
+"https://cli.vuejs.org/core-plugins/eslint.html#configuration": {
+  "identifier" : "https:\/\/cli.vuejs.org\/core-plugins\/eslint.html#configuration",
+  "title" : "here",
+  "titleInlineContent" : [
+    {
+      "text" : "here",
+      "type" : "text"
+    }
+  ],
+  "type" : "link",
+  "url" : "https:\/\/cli.vuejs.org\/core-plugins\/eslint.html#configuration"
+},
+"https://cli.vuejs.org/guide/mode-and-env.html#environment-variables": {
+  "identifier" : "https:\/\/cli.vuejs.org\/guide\/mode-and-env.html#environment-variables",
+  "title" : "How to set Environment Variables in Vue CLI",
+  "titleInlineContent" : [
+    {
+      "text" : "How to set Environment Variables in Vue CLI",
+      "type" : "text"
+    }
+  ],
+  "type" : "link",
+  "url" : "https:\/\/cli.vuejs.org\/guide\/mode-and-env.html#environment-variables"
+},
+"https://eslint.org/": {
+  "identifier" : "https:\/\/eslint.org\/",
+  "title" : "ESLint",
+  "titleInlineContent" : [
+    {
+      "text" : "ESLint",
+      "type" : "text"
+    }
+  ],
+  "type" : "link",
+  "url" : "https:\/\/eslint.org\/"
+},
+"https://github.com/airbnb/javascript": {
+  "identifier" : "https:\/\/github.com\/airbnb\/javascript",
+  "title" : "Airbnb",
+  "titleInlineContent" : [
+    {
+      "text" : "Airbnb",
+      "type" : "text"
+    }
+  ],
+  "type" : "link",
+  "url" : "https:\/\/github.com\/airbnb\/javascript"
+},
+"https://jestjs.io/": {
+  "identifier" : "https:\/\/jestjs.io\/",
+  "title" : "Jest",
+  "titleInlineContent" : [
+    {
+      "text" : "Jest",
+      "type" : "text"
+    }
+  ],
+  "type" : "link",
+  "url" : "https:\/\/jestjs.io\/"
+},
+"https://router.vuejs.org": {
+  "identifier" : "https:\/\/router.vuejs.org",
+  "title" : "Vue Router",
+  "titleInlineContent" : [
+    {
+      "text" : "Vue Router",
+      "type" : "text"
+    }
+  ],
+  "type" : "link",
+  "url" : "https:\/\/router.vuejs.org"
+},
+"https://router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations": {
+  "identifier" : "https:\/\/router.vuejs.org\/guide\/essentials\/history-mode.html#example-server-configurations",
+  "title" : "Vue Router Server Configs",
+  "titleInlineContent" : [
+    {
+      "text" : "Vue Router Server Configs",
+      "type" : "text"
+    }
+  ],
+  "type" : "link",
+  "url" : "https:\/\/router.vuejs.org\/guide\/essentials\/history-mode.html#example-server-configurations"
+},
+"https://vuejs.org/v2/guide/state-management.html#Simple-State-Management-from-Scratch": {
+  "identifier" : "https:\/\/vuejs.org\/v2\/guide\/state-management.html#Simple-State-Management-from-Scratch",
+  "title" : "Simple State Management",
+  "titleInlineContent" : [
+    {
+      "text" : "Simple State Management",
+      "type" : "text"
+    }
+  ],
+  "type" : "link",
+  "url" : "https:\/\/vuejs.org\/v2\/guide\/state-management.html#Simple-State-Management-from-Scratch"
+},
+"https://vuejs.org/v2/style-guide/": {
+  "identifier" : "https:\/\/vuejs.org\/v2\/style-guide\/",
+  "title" : "Vue Style Guide",
+  "titleInlineContent" : [
+    {
+      "text" : "Vue Style Guide",
+      "type" : "text"
+    }
+  ],
+  "type" : "link",
+  "url" : "https:\/\/vuejs.org\/v2\/style-guide\/"
+},
+"https://www.swift.org/documentation/docc": {
+  "identifier" : "https:\/\/www.swift.org\/documentation\/docc",
+  "title" : "DocC Docs",
+  "titleInlineContent" : [
+    {
+      "text" : "DocC Docs",
+      "type" : "text"
+    }
+  ],
+  "type" : "link",
+  "url" : "https:\/\/www.swift.org\/documentation\/docc"
+}
+}
+}

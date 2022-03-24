@@ -1,0 +1,148 @@
+{
+  "abstract" : [
+    {
+      "text" : "A web renderer for DocC Archives produced by DocC.",
+      "type" : "text"
+    }
+  ],
+  "hierarchy" : {
+    "paths" : [
+      [
+
+      ]
+    ]
+  },
+  "identifier" : {
+    "interfaceLanguage" : "swift",
+    "url" : "doc:\/\/org.swift.swiftdoccrender\/documentation\/SwiftDocCRender"
+  },
+  "kind" : "article",
+  "metadata" : {
+    "role" : "collection",
+    "title" : "Swift-DocC-Render"
+  },
+  "primaryContentSections" : [
+    {
+      "content" : [
+        {
+          "anchor" : "Overview",
+          "level" : 2,
+          "text" : "Overview",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "DocC-Render displays documentation produced by ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "https:\/\/www.swift.org\/documentation\/docc",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : " on the web and is included in DocC Archives.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        },
+        {
+          "anchor" : "How-It-Works",
+          "level" : 3,
+          "text" : "How It Works",
+          "type" : "heading"
+        },
+        {
+          "inlineContent" : [
+            {
+              "text" : "DocC-Render is a Single Page Application (SPA for short), powered by ",
+              "type" : "text"
+            },
+            {
+              "identifier" : "https:\/\/vuejs.org",
+              "isActive" : true,
+              "type" : "reference"
+            },
+            {
+              "text" : ". SPAs are web apps that are rendered entirely in the browser using JavaScript. Pages and content are generated dynamically at runtime, based on DocC generated Render JSON data.",
+              "type" : "text"
+            }
+          ],
+          "type" : "paragraph"
+        }
+      ],
+      "kind" : "content"
+    }
+  ],
+  "schemaVersion" : {
+    "major" : 0,
+    "minor" : 3,
+    "patch" : 0
+  },
+  "sections" : [
+
+  ],
+  "topicSections" : [
+    {
+      "identifiers" : [
+        "doc:\/\/org.swift.swiftdoccrender\/documentation\/Swift-DocC-Render\/Internals"
+      ],
+      "title" : "Contributing and Internals"
+    }
+  ],
+  "variants" : [
+    {
+      "paths" : [
+        "\/documentation\/swiftdoccrender"
+      ],
+      "traits" : [
+        {
+          "interfaceLanguage" : "swift"
+        }
+      ]
+    }
+  ]
+, 
+"references": {
+"doc://org.swift.swiftdoccrender/documentation/Swift-DocC-Render/Internals": {
+  "abstract" : [
+    {
+      "text" : "Learn how DocC-Render is built internally, the principles behind its structure, and how the components interact.",
+      "type" : "text"
+    }
+  ],
+  "identifier" : "doc:\/\/org.swift.swiftdoccrender\/documentation\/Swift-DocC-Render\/Internals",
+  "kind" : "article",
+  "role" : "article",
+  "title" : "Learn about DocC-Render’s internals",
+  "type" : "topic",
+  "url" : "\/documentation\/swift-docc-render\/internals"
+},
+"https://vuejs.org": {
+  "identifier" : "https:\/\/vuejs.org",
+  "title" : "Vue.js",
+  "titleInlineContent" : [
+    {
+      "text" : "Vue.js",
+      "type" : "text"
+    }
+  ],
+  "type" : "link",
+  "url" : "https:\/\/vuejs.org"
+},
+"https://www.swift.org/documentation/docc": {
+  "identifier" : "https:\/\/www.swift.org\/documentation\/docc",
+  "title" : "DocC",
+  "titleInlineContent" : [
+    {
+      "text" : "DocC",
+      "type" : "text"
+    }
+  ],
+  "type" : "link",
+  "url" : "https:\/\/www.swift.org\/documentation\/docc"
+}
+}
+}
